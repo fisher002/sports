@@ -97,25 +97,22 @@
     </van-tabs>
     <van-dialog
       v-model="showDialog"
-      :title="registerTitle"
       show-cancel-button
       :showConfirmButton="false"
       :closeOnClickOverlay="true"
       width="90%"
     >
-      <userRegister v-if="registerType == 'user'"></userRegister>
-      <adminRegister v-if="registerType == 'admin'"></adminRegister>
+      <register :type="registerType"></register>
     </van-dialog>
   </div>
 </template>
 <script>
 import { Toast } from "vant";
 import top from "@/components/public/top";
-import userRegister from "./userRegister";
-import adminRegister from "./adminRegister";
+import register from "./register";
 import api from "./indexUrl";
 export default {
-  components: { top, userRegister, adminRegister },
+  components: { top, register },
   data() {
     return {
       showDialog: false,
@@ -166,7 +163,7 @@ export default {
     },
     toRegister(type) {
       this.registerType = type;
-      this.showDialog = true;
+      this.showDialog = !this.showDialog;
       if (type === "user") {
         this.registerTitle = "用户注册";
       } else {
@@ -187,6 +184,9 @@ export default {
 </script>
 <style lang="scss" scoped>
 .user-login {
-  padding: 30px 0;
+  padding: 50px 0;
+}
+.van-dialog {
+  top: 12% !important;
 }
 </style>

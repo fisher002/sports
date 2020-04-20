@@ -95,37 +95,21 @@
         </div>
       </van-tab>
     </van-tabs>
-    <van-dialog
-      v-model="showDialog"
-      :title="registerTitle"
-      show-cancel-button
-      :showConfirmButton="false"
-      :closeOnClickOverlay="true"
-      width="90%"
-    >
-      <userRegister v-if="registerType == 'user'"></userRegister>
-      <adminRegister v-if="registerType == 'admin'"></adminRegister>
-    </van-dialog>
   </div>
 </template>
 <script>
 import { Toast } from "vant";
 import top from "@/components/public/top";
-import userRegister from "./userRegister";
-import adminRegister from "./adminRegister";
 import api from "./indexUrl";
 export default {
-  components: { top, userRegister, adminRegister },
+  components: { top },
   data() {
     return {
-      showDialog: false,
       loading: false,
       showPicker: false,
       title: "登录",
       activeName: "user",
-      registerTitle: "",
-      registerType: "",
-      columns: ["广东科贸职业学院", "清华大学", "北京大学", "广铁", "广外"],
+      columns: ['广东科贸职业学院', '清华大学', '北京大学', '广铁', '广外'],
       userData: {
         username: "",
         password: ""
@@ -165,12 +149,10 @@ export default {
       }
     },
     toRegister(type) {
-      this.registerType = type;
-      this.showDialog = true;
       if (type === "user") {
-        this.registerTitle = "用户注册";
+        Toast("用户注册");
       } else {
-        this.registerTitle = "管理员注册";
+        Toast("管理员注册");
       }
     },
     /**选择学校值 */
@@ -181,12 +163,12 @@ export default {
     onConfirm(val) {
       this.adminData.school = val;
       this.showPicker = false;
-    }
+    },
   }
 };
 </script>
 <style lang="scss" scoped>
 .user-login {
-  padding: 30px 0;
+  padding: 50px 0;
 }
 </style>

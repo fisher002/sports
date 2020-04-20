@@ -103,8 +103,7 @@
       :closeOnClickOverlay="true"
       width="90%"
     >
-      <userRegister v-if="registerType == 'user'"></userRegister>
-      <adminRegister v-if="registerType == 'admin'"></adminRegister>
+      <userRegister :type="registerType"></userRegister>
     </van-dialog>
   </div>
 </template>
@@ -112,10 +111,9 @@
 import { Toast } from "vant";
 import top from "@/components/public/top";
 import userRegister from "./userRegister";
-import adminRegister from "./adminRegister";
 import api from "./indexUrl";
 export default {
-  components: { top, userRegister, adminRegister },
+  components: { top, userRegister },
   data() {
     return {
       showDialog: false,
@@ -187,6 +185,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 .user-login {
-  padding: 30px 0;
+  padding: 50px 0;
 }
 </style>

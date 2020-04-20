@@ -6,7 +6,7 @@
         <div class="user-login">
           <van-form @submit="onSubmit">
             <van-field
-              v-model="userData.username"
+              v-model="data.username"
               name="username"
               label="账号"
               placeholder="手机号码"
@@ -14,7 +14,7 @@
               :rules="[{ required: true, message: '请填写手机号码' }]"
             />
             <van-field
-              v-model="userData.password"
+              v-model="data.password"
               type="password"
               name="密码"
               label="密码"
@@ -36,7 +36,6 @@
           <div style="margin: 16px;">
             <van-button @click="toRegister('user')" round block type="info">没有账号?马上注册</van-button>
           </div>
-          <van-divider>第三方直接登录</van-divider>
         </div>
       </van-tab>
       <van-tab title="管理员登陆" name="admin">
@@ -46,9 +45,8 @@
               readonly
               clickable
               label="学校"
-              :value="adminData.school"
+              :value="school"
               placeholder="请选择您所在的学校"
-              :rules="[{ required: true, message: '请选择您所在的学校' }]"
               @click="showPicker = true"
             />
             <van-popup v-model="showPicker" position="bottom">
@@ -57,11 +55,10 @@
                 :columns="columns"
                 @cancel="showPicker = false"
                 @confirm="onConfirm"
-                @change="onChange"
               />
             </van-popup>
             <van-field
-              v-model="adminData.username"
+              v-model="data1.username"
               name="username"
               label="账号"
               placeholder="手机号码"
@@ -69,7 +66,7 @@
               :rules="[{ required: true, message: '请填写手机号码' }]"
             />
             <van-field
-              v-model="adminData.password"
+              v-model="data1.password"
               type="password"
               name="密码"
               label="密码"
@@ -91,47 +88,30 @@
           <div style="margin: 16px;">
             <van-button @click="toRegister('admin')" round block type="info">没有账号?马上注册</van-button>
           </div>
-          <van-divider>第三方直接登录</van-divider>
         </div>
       </van-tab>
     </van-tabs>
-    <van-dialog
-      v-model="showDialog"
-      :title="registerTitle"
-      show-cancel-button
-      :showConfirmButton="false"
-      :closeOnClickOverlay="true"
-      width="90%"
-    >
-      <userRegister v-if="registerType == 'user'"></userRegister>
-      <adminRegister v-if="registerType == 'admin'"></adminRegister>
-    </van-dialog>
   </div>
 </template>
 <script>
 import { Toast } from "vant";
 import top from "@/components/public/top";
-import userRegister from "./userRegister";
-import adminRegister from "./adminRegister";
 import api from "./indexUrl";
 export default {
-  components: { top, userRegister, adminRegister },
+  components: { top },
   data() {
     return {
-      showDialog: false,
       loading: false,
       showPicker: false,
       title: "登录",
       activeName: "user",
-      registerTitle: "",
-      registerType: "",
-      columns: ["广东科贸职业学院", "清华大学", "北京大学", "广铁", "广外"],
-      userData: {
+      columns: ['杭州', '宁波', '温州', '嘉兴', '湖州'],
+      school: "",
+      data: {
         username: "",
         password: ""
       },
-      adminData: {
-        school: "",
+      data1: {
         username: "",
         password: ""
       }
@@ -140,9 +120,9 @@ export default {
   methods: {
     /**用户登录 */
     onSubmit() {
-      if (this.userData) {
+      if (this.data) {
         this.loading = true;
-        // api.checkLogin(this.userData).then(
+        // api.checkLogin(this.data).then(
         //   res => {},
         //   res => {}
         // );
@@ -153,9 +133,9 @@ export default {
     },
     /**管理员登陆 */
     onSubmitAdmin() {
-      if (this.adminData) {
+      if (this.data1) {
         this.loading = true;
-        // api.checkLogin(this.adminData).then(
+        // api.checkLogin(this.data1).then(
         //   res => {},
         //   res => {}
         // );
@@ -165,28 +145,22 @@ export default {
       }
     },
     toRegister(type) {
-      this.registerType = type;
-      this.showDialog = true;
       if (type === "user") {
-        this.registerTitle = "用户注册";
+        Toast("用户注册");
       } else {
-        this.registerTitle = "管理员注册";
+        Toast("管理员注册");
       }
     },
     /**选择学校值 */
-    onChange(picker, val, index) {
-      this.adminData.school = val;
-    },
-    /**选择学校值 */
     onConfirm(val) {
-      this.adminData.school = val;
+      this.school = val;
       this.showPicker = false;
-    }
+    },
   }
 };
 </script>
 <style lang="scss" scoped>
 .user-login {
-  padding: 30px 0;
+  padding: 50px 0;
 }
 </style>

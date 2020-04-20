@@ -101,21 +101,16 @@
       show-cancel-button
       :showConfirmButton="false"
       :closeOnClickOverlay="true"
-      width="90%"
-    >
-      <userRegister v-if="registerType == 'user'"></userRegister>
-      <adminRegister v-if="registerType == 'admin'"></adminRegister>
-    </van-dialog>
+      width="100%"
+    ></van-dialog>
   </div>
 </template>
 <script>
 import { Toast } from "vant";
 import top from "@/components/public/top";
-import userRegister from "./userRegister";
-import adminRegister from "./adminRegister";
 import api from "./indexUrl";
 export default {
-  components: { top, userRegister, adminRegister },
+  components: { top },
   data() {
     return {
       showDialog: false,
@@ -124,7 +119,6 @@ export default {
       title: "登录",
       activeName: "user",
       registerTitle: "",
-      registerType: "",
       columns: ["广东科贸职业学院", "清华大学", "北京大学", "广铁", "广外"],
       userData: {
         username: "",
@@ -165,8 +159,7 @@ export default {
       }
     },
     toRegister(type) {
-      this.registerType = type;
-      this.showDialog = true;
+      this.showDialog = !this.showDialog;
       if (type === "user") {
         this.registerTitle = "用户注册";
       } else {
@@ -187,6 +180,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 .user-login {
-  padding: 30px 0;
+  padding: 50px 0;
 }
 </style>

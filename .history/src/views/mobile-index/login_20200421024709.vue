@@ -187,6 +187,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 .user-login {
-  padding: 30px 0;
+  padding: 50px 0;
 }
 </style>
