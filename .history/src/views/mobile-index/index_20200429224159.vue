@@ -2,8 +2,11 @@
   <div class="game-list">
     <van-pull-refresh v-model="isLoading" success-text="刷新成功" @refresh="onRefresh">
       <div class="drop-menu">
+        <van-dropdown-menu style="width:30%">
+          <van-dropdown-item v-model="values" :options="schoolData" @change="getValue" />
+        </van-dropdown-menu>
         <van-search
-          style="width:100%"
+          style="width:70%"
           show-action
           v-model="params.compateEventName"
           placeholder="请输入比赛名称"
@@ -21,6 +24,11 @@
               <div>名称：{{item.compateEventName}}</div>
               <div>场地：{{item.location}}</div>
               <div v-html="formatStatus(item.status)"></div>
+            </div>
+            <div class="item-top font-size13">
+              <div>{{`仅${item.sexLimit == 'M' ? '男' : '女'}生`}}</div>
+              <div>限制人数：{{item.quantityLimit}}人</div>
+              <div>已报名人数：{{item.num}}人</div>
             </div>
             <div class="item-top font-size13 color-g">
               <div>开始时间：{{formatDate(item.startTime)}}</div>
@@ -47,19 +55,25 @@
 <script>
 import utils from "@/utils/comUtils";
 import { Toast } from "vant";
-import api from "./commentUrl";
+import api from "./indexUrl";
 export default {
   data() {
     return {
       loading: false,
       isLoading: false,
       values: 0,
+      schoolData: [],
       data: "",
       pageNum: 1,
       params: {
+        compateEventParentId: "",
+        compateEventId: "",
+        sexLimit: "",
+        startTime: "",
+        endTime: "",
         status: "",
         schoolId: "",
-        compateEventName: ""
+        compateEventName: "" // 关键字
       }
     };
   },
@@ -67,11 +81,49 @@ export default {
     this.checkLogin();
   },
   methods: {
+    /**获取学校数据 */
+    getSchoolList() {
+      utils.getSchoolList().then(
+        res => {
+          if (res.data.code == 10000) {
+            res.data.data.forEach(e => {
+              let demo = {
+                text: e.schoolName,
+                value: e.id
+              };
+              this.schoolData.push(demo);
+            });
+          }
+        },
+        res => {
+          Toast(res.data.msg);
+        }
+      );
+    },
     /**检查是否登录 */
     checkLogin() {
+      this.getSchoolList();
       if (utils.checkLogin()) {
+        this.schoolData = [
+          {
+            text: "我的学校",
+            value: 0
+          },
+          {
+            text: "所有学校",
+            value: "n"
+          }
+        ];
         // 获取对应比赛项目
         this.params.schoolId = sessionStorage.getItem("schoolId");
+        this.getSchoolCompatePageList();
+      } else {
+        this.schoolData = [
+          {
+            text: "所有学校",
+            value: 0
+          }
+        ];
         this.getSchoolCompatePageList();
       }
     },
@@ -108,6 +160,23 @@ export default {
         this.getSchoolCompatePageList("0");
       }
     },
+    /**下拉菜单回调 */
+    getValue(val) {
+      this.pageNum = 1;
+      for (let i in this.params) {
+        this.params[i] = "";
+      }
+      if (val > 0) {
+        this.params.schoolId = `${val}`;
+      }
+      if (val == 0) {
+        this.params.schoolId = sessionStorage.getItem("schoolId");
+      }
+      if (val === "n") {
+        this.params.schoolId = "";
+      }
+      this.getSchoolCompatePageList();
+    },
     /**onSearch搜索 */
     onSearch() {
       this.pageNum = 1;
@@ -118,10 +187,10 @@ export default {
       this.pageNum = 1;
       this.getSchoolCompatePageList();
     },
-    /**查看评论 */
+    /**toDeatil */
     toDeatil(id) {
       this.$router.push({
-        path: "/user/commentusers",
+        path: "/user/detailcompate",
         query: {
           compateId: `${id}`
         }
@@ -159,9 +228,6 @@ export default {
     display: flex;
     padding: 0 10px;
     flex-wrap: wrap;
-    .sort-title {
-      display: flex;
-    }
     .list-item {
       display: flex;
       width: 100%;
@@ -196,8 +262,5 @@ export default {
       line-height: 18px !important;
     }
   }
-}
-.van-empty {
-  padding: 0 !important;
 }
 </style>

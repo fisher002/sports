@@ -596,7 +596,7 @@ export default {
     /**状态格式化 */
     formatcStatus(res) {
       if (res === "no") {
-        return "<span style='color:#ff0000'>未退还</span>";
+        return "<span style='color:#9e9e9e'>未退还</span>";
       }
       if (res === "yes") {
         return "<span style='color:#4caf50'>已退还</span>";

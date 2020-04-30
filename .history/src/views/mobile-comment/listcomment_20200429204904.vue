@@ -1,18 +1,6 @@
 <template>
   <div class="game-list">
     <van-pull-refresh v-model="isLoading" success-text="刷新成功" @refresh="onRefresh">
-      <div class="drop-menu">
-        <van-search
-          style="width:100%"
-          show-action
-          v-model="params.compateEventName"
-          placeholder="请输入比赛名称"
-        >
-          <template #action>
-            <div @click="onSearch">搜索</div>
-          </template>
-        </van-search>
-      </div>
       <div class="data-list" v-if="data.list && data.list.length > 0">
         <div class="list-item" v-for="item in data.list" :key="item.id" @click="toDeatil(item.id)">
           <div class="item-title">{{item.schoolName}}</div>
@@ -58,8 +46,7 @@ export default {
       pageNum: 1,
       params: {
         status: "",
-        schoolId: "",
-        compateEventName: ""
+        schoolId: ""
       }
     };
   },
@@ -108,20 +95,15 @@ export default {
         this.getSchoolCompatePageList("0");
       }
     },
-    /**onSearch搜索 */
-    onSearch() {
-      this.pageNum = 1;
-      this.getSchoolCompatePageList();
-    },
     /**下拉刷新 */
     onRefresh() {
       this.pageNum = 1;
       this.getSchoolCompatePageList();
     },
-    /**查看评论 */
+    /**toDeatil */
     toDeatil(id) {
       this.$router.push({
-        path: "/user/commentusers",
+        path: "/user/chatusers",
         query: {
           compateId: `${id}`
         }

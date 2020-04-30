@@ -15,10 +15,10 @@ export default {
                 date.getMonth() + 1 < 10
                     ? `0${date.getMonth() + 1}`
                     : date.getMonth() + 1,
-            day = date.getUTCDate() < 10 ? `0${date.getUTCDate()}` : date.getUTCDate(),
-            hour = date.getUTCHours() < 10 ? `0${date.getUTCHours()}` : date.getUTCHours(),
+            day = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate(),
+            hour = date.getHours() < 10 ? `0${date.getHours()}` : date.getHours(),
             minute =
-                date.getUTCMinutes() < 10 ? `0${date.getUTCMinutes()}` : date.getUTCMinutes();
+                date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes();
         return year + "-" + mouth + "-" + day + " " + hour + ":" + minute;
     },
     /**日期格式化v2 */
@@ -29,18 +29,15 @@ export default {
                 date.getMonth() + 1 < 10
                     ? `0${date.getMonth() + 1}`
                     : date.getMonth() + 1,
-            day = date.getUTCDate() < 10 ? `0${date.getUTCDate()}` : date.getUTCDate();
+            day = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate();
         return year + "-" + mouth + "-" + day;
     },
     /**日期格式化v3 */
     formatTime(res) {
-        let testDate = new Date(res);
-        let oldDate = new Date(`${testDate.getFullYear()}-${testDate.getUTCMonth() + 1}-${testDate.getUTCDate()} ${testDate.getUTCHours()}:${testDate.getUTCMinutes()}`);
+        let oldDate = new Date(res);
         let nowDate = new Date();
-        if ((nowDate.getTime() / 1000 - oldDate.getTime() / 1000) < 0) {
-            return `未知时间`;
-        }
-        if ((nowDate.getTime() / 1000 - oldDate.getTime() / 1000) >= 0 && (nowDate.getTime() / 1000 - oldDate.getTime() / 1000) <= 5*60) {
+        console.log(nowDate);
+        if ((nowDate.getTime() / 1000 / 60 - oldDate.getTime() / 1000 / 60) <= 5) {
             return `刚刚`;
         }
         if ((nowDate.getTime() / 1000 / 60 - oldDate.getTime() / 1000 / 60) > 5 && (nowDate.getTime() / 1000 / 60 - oldDate.getTime() / 1000 / 60) <= 60) {

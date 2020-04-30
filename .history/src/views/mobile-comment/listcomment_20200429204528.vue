@@ -1,32 +1,42 @@
 <template>
   <div class="game-list">
     <van-pull-refresh v-model="isLoading" success-text="刷新成功" @refresh="onRefresh">
-      <div class="drop-menu">
-        <van-search
-          style="width:100%"
-          show-action
-          v-model="params.compateEventName"
-          placeholder="请输入比赛名称"
-        >
-          <template #action>
-            <div @click="onSearch">搜索</div>
-          </template>
-        </van-search>
-      </div>
       <div class="data-list" v-if="data.list && data.list.length > 0">
-        <div class="list-item" v-for="item in data.list" :key="item.id" @click="toDeatil(item.id)">
-          <div class="item-title">{{item.schoolName}}</div>
-          <div class="item-content">
-            <div class="item-top font-size14">
-              <div>名称：{{item.compateEventName}}</div>
-              <div>场地：{{item.location}}</div>
-              <div v-html="formatStatus(item.status)"></div>
-            </div>
-            <div class="item-top font-size13 color-g">
-              <div>开始时间：{{formatDate(item.startTime)}}</div>
-              <div>结束时间：{{formatDate(item.endTime)}}</div>
+        <div v-if="ingData" style="width: 100%">
+          <div class="sort-title">正在进行的赛事</div>
+          <div class="list-item" v-for="item in ingData" :key="item.id" @click="toDeatil(item.id)">
+            <div class="item-title">{{item.schoolName}}</div>
+            <div class="item-content">
+              <div class="item-top font-size14">
+                <div>名称：{{item.compateEventName}}</div>
+                <div>场地：{{item.location}}</div>
+                <div v-html="formatStatus(item.status)"></div>
+              </div>
+              <div class="item-top font-size13 color-g">
+                <div>开始时间：{{formatDate(item.startTime)}}</div>
+                <div>结束时间：{{formatDate(item.endTime)}}</div>
+              </div>
             </div>
           </div>
+          <van-empty v-if="ingData.length <= 0" description="暂无正在进行的比赛" />
+        </div>
+        <div v-if="willData" style="width: 100%">
+          <div class="sort-title">即将进行的赛事</div>
+          <div class="list-item" v-for="item in willData" :key="item.id">
+            <div class="item-title">{{item.schoolName}}</div>
+            <div class="item-content">
+              <div class="item-top font-size14">
+                <div>名称：{{item.compateEventName}}</div>
+                <div>场地：{{item.location}}</div>
+                <div v-html="formatStatus(item.status)"></div>
+              </div>
+              <div class="item-top font-size13 color-g">
+                <div>开始时间：{{formatDate(item.startTime)}}</div>
+                <div>结束时间：{{formatDate(item.endTime)}}</div>
+              </div>
+            </div>
+          </div>
+          <van-empty v-if="willData.length <= 0" description="暂无将要进行的比赛" />
         </div>
         <div class="load-btn" v-show="data.hasNextPage">
           <van-button
@@ -42,6 +52,9 @@
         <van-empty description="暂无数据" />
       </div>
     </van-pull-refresh>
+    <div class="fixed bottom-right">
+      <van-button style="width:100%" type="default" to="/user/alltournaments" size="small">全部赛事流程</van-button>
+    </div>
   </div>
 </template>
 <script>
@@ -58,8 +71,7 @@ export default {
       pageNum: 1,
       params: {
         status: "",
-        schoolId: "",
-        compateEventName: ""
+        schoolId: ""
       }
     };
   },
@@ -108,20 +120,15 @@ export default {
         this.getSchoolCompatePageList("0");
       }
     },
-    /**onSearch搜索 */
-    onSearch() {
-      this.pageNum = 1;
-      this.getSchoolCompatePageList();
-    },
     /**下拉刷新 */
     onRefresh() {
       this.pageNum = 1;
       this.getSchoolCompatePageList();
     },
-    /**查看评论 */
+    /**toDeatil */
     toDeatil(id) {
       this.$router.push({
-        path: "/user/commentusers",
+        path: "/user/chatusers",
         query: {
           compateId: `${id}`
         }
@@ -139,6 +146,14 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.fixed {
+  position: fixed;
+  width: 45%;
+}
+.bottom-right {
+  top: 46px;
+  right: 0;
+}
 .font-size13 {
   font-size: 13px;
 }
@@ -198,6 +213,6 @@ export default {
   }
 }
 .van-empty {
-  padding: 0 !important;
+ padding: 0 !important;
 }
 </style>

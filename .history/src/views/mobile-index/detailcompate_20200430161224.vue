@@ -197,10 +197,6 @@ export default {
     },
     /**申请成为裁判 */
     toSignUpReferee() {
-      if (!utils.checkLogin()) {
-        Toast("未登录，不可报名");
-        return;
-      }
       this.reloading = !this.reloading;
       let param = utils.checkParams(this.params);
       api.toSignUpReferee(param).then(

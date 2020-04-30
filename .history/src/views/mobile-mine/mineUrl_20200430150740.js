@@ -125,11 +125,4 @@ export default {
             data: params
         })
     },
-    editCompateEquipment(params) {
-        return axios({
-            method: 'put',
-            url: `${baseUrl}/sm/compateEquipment/edit`,
-            params: params
-        })
-    },
 }

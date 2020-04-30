@@ -99,7 +99,7 @@
               :key="item.id"
               @click="showEqMent(item)"
             >
-              <div class="mate-name font-size18">
+              <div class="mate-name">
                 <div>{{item.equipmentName}}</div>
               </div>
               <div class="mate-name mate-time">{{`总数${item.num} 剩余${item.sum}`}}</div>
@@ -116,12 +116,9 @@
               :key="item.id"
               @click="showComEqMent(item)"
             >
-              <div class="mate-name font-size18">
-                <div>{{item.equipmentName}}</div>
-              </div>
               <div class="mate-name">
-                <div>数量{{item.sum}}</div>
-                <div v-html="formatcStatus(item.status)"></div>
+                <div>{{item.equipmentName}}</div>
+                <div class="mate-time">数量{{item.sum}}</div>
               </div>
               <div class="mate-name mate-time">{{`${formatDate(item.createDate)}`}}</div>
             </div>
@@ -420,9 +417,6 @@ export default {
     },
     /**弹起退还 */
     showComEqMent(item) {
-      if(item.status === 'yes') {
-        return;
-      }
       this.comEqs = item;
       this.showEqsDig = !this.showEqsDig;
     },
@@ -593,15 +587,6 @@ export default {
         return "<span style='color:#4caf50'>审核成功</span>";
       }
     },
-    /**状态格式化 */
-    formatcStatus(res) {
-      if (res === "no") {
-        return "<span style='color:#ff0000'>未退还</span>";
-      }
-      if (res === "yes") {
-        return "<span style='color:#4caf50'>已退还</span>";
-      }
-    },
     /**日期格式化 */
     formatDate(res) {
       return utils.formatDates(res);
@@ -610,10 +595,6 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.font-size18 {
-  font-size: 18px;
-  font-weight: bold;
-}
 .class-box {
   display: flex;
   justify-content: space-around;

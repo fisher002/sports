@@ -118,10 +118,10 @@ export default {
       this.pageNum = 1;
       this.getSchoolCompatePageList();
     },
-    /**查看评论 */
+    /**toDeatil */
     toDeatil(id) {
       this.$router.push({
-        path: "/user/commentusers",
+        path: "/user/chatusers",
         query: {
           compateId: `${id}`
         }

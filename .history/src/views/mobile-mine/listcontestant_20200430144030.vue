@@ -99,7 +99,7 @@
               :key="item.id"
               @click="showEqMent(item)"
             >
-              <div class="mate-name font-size18">
+              <div class="mate-name">
                 <div>{{item.equipmentName}}</div>
               </div>
               <div class="mate-name mate-time">{{`总数${item.num} 剩余${item.sum}`}}</div>
@@ -108,56 +108,9 @@
         </van-pull-refresh>
       </van-tab>
       <van-tab title="设备退还" name="d">
-        <van-pull-refresh v-model="eqLoading" success-text="刷新成功" @refresh="comRefresh">
-          <div class="eq-item" v-if="comEquipments">
-            <div
-              class="class-mate"
-              v-for="item in comEquipments"
-              :key="item.id"
-              @click="showComEqMent(item)"
-            >
-              <div class="mate-name font-size18">
-                <div>{{item.equipmentName}}</div>
-              </div>
-              <div class="mate-name">
-                <div>数量{{item.sum}}</div>
-                <div v-html="formatcStatus(item.status)"></div>
-              </div>
-              <div class="mate-name mate-time">{{`${formatDate(item.createDate)}`}}</div>
-            </div>
-          </div>
-        </van-pull-refresh>
+        <div>设备退还</div>
       </van-tab>
     </van-tabs>
-    <van-dialog
-      v-model="showEqsDig"
-      title="设备租借"
-      show-cancel-button
-      :showConfirmButton="false"
-      @closed="clear"
-    >
-      <van-form @submit="onComEqSubmit">
-        <van-field
-          v-model="comEqs.equipmentName"
-          label="设备名"
-          clearable
-          readonly
-          label-align="right"
-        />
-        <van-field v-model="comEqs.sum" label="租借总数" clearable readonly label-align="right" />
-        <van-field :value="formatDate(comEqs.createDate)" label="租借时间" clearable readonly label-align="right" />
-        <div style="margin: 16px;">
-          <van-button
-            :loading="eqsloading"
-            loading-text="退还中..."
-            round
-            block
-            type="info"
-            native-type="submit"
-          >立即退还</van-button>
-        </div>
-      </van-form>
-    </van-dialog>
     <van-dialog
       v-model="showEqDig"
       title="设备租借"
@@ -287,7 +240,6 @@ export default {
     return {
       showDig: false,
       showEqDig: false,
-      showEqsDig: false,
       eqLoading: false,
       eqsloading: false,
       scloading: false,
@@ -298,7 +250,6 @@ export default {
       pageNum: 1,
       students: "",
       compateeqs: "",
-      comEqs: "",
       activeName: "a",
       imgList: [],
       studentData: {
@@ -316,7 +267,6 @@ export default {
       },
       pageNums: 1,
       equipments: "",
-      comEquipments: "",
       comeqsData: {
         compateId: "",
         sum: "",
@@ -346,7 +296,7 @@ export default {
         this.getEquipmentList();
       }
       if (val === "d") {
-        this.getCompateEquipmentList();
+        Toast("设备退还");
       }
     },
     /**获取学校设备 */
@@ -356,20 +306,6 @@ export default {
           this.eqLoading = false;
           if (res.data.code == 10000) {
             this.equipments = res.data.data;
-          }
-        },
-        res => {
-          this.eqLoading = false;
-        }
-      );
-    },
-    /**获取已租借设备 */
-    getCompateEquipmentList() {
-      api.getCompateEquipmentList({ compateId: this.params.compateId }).then(
-        res => {
-          this.eqLoading = false;
-          if (res.data.code == 10000) {
-            this.comEquipments = res.data.data;
           }
         },
         res => {
@@ -417,28 +353,6 @@ export default {
       this.showEqDig = !this.showEqDig;
       this.comeqsData.equipmentName = item.equipmentName;
       this.comeqsData.compateId = this.params.compateId;
-    },
-    /**弹起退还 */
-    showComEqMent(item) {
-      if(item.status === 'yes') {
-        return;
-      }
-      this.comEqs = item;
-      this.showEqsDig = !this.showEqsDig;
-    },
-    /**提交退还信息 */
-    onComEqSubmit() {
-      this.eqsloading = true;
-      api.editCompateEquipment({id: this.comEqs.id}).then(
-        res => {
-          this.eqsloading = false;
-          this.showEqsDig = false;
-          Toast(res.data.msg);
-        },
-        res => {
-          this.eqsloading = false;
-        }
-      );
     },
     /**提交租借信息 */
     onEqSubmit() {
@@ -520,11 +434,6 @@ export default {
       this.pageNums = 1;
       this.getEquipmentList();
     },
-    /**下拉刷新 */
-    comRefresh() {
-      this.eqLoading = !this.eqLoading;
-      this.getCompateEquipmentList();
-    },
     /**获取富文本组件回调 */
     getContent(val) {
       this.medias.compateId = this.params.compateId;
@@ -593,15 +502,6 @@ export default {
         return "<span style='color:#4caf50'>审核成功</span>";
       }
     },
-    /**状态格式化 */
-    formatcStatus(res) {
-      if (res === "no") {
-        return "<span style='color:#ff0000'>未退还</span>";
-      }
-      if (res === "yes") {
-        return "<span style='color:#4caf50'>已退还</span>";
-      }
-    },
     /**日期格式化 */
     formatDate(res) {
       return utils.formatDates(res);
@@ -610,10 +510,6 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.font-size18 {
-  font-size: 18px;
-  font-weight: bold;
-}
 .class-box {
   display: flex;
   justify-content: space-around;

@@ -9,14 +9,14 @@ export default {
             data: params
         })
     },
-    getCompateCommentPageList(params,pageNum) {
+    getCompateCommentPageList(params) {
         return axios({
             method: 'POST',
             url: `${baseUrl}/sm/compateComment/page/${pageNum}`,
             data: params
         })
     },
-    addComment(params) {
+    addMedia(params) {
         return axios({
             method: 'post',
             url: `${baseUrl}/sm/compateComment/add`,

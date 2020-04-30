@@ -34,13 +34,12 @@ export default {
     },
     /**日期格式化v3 */
     formatTime(res) {
-        let testDate = new Date(res);
-        let oldDate = new Date(`${testDate.getFullYear()}-${testDate.getUTCMonth() + 1}-${testDate.getUTCDate()} ${testDate.getUTCHours()}:${testDate.getUTCMinutes()}`);
+        let oldDate = new Date(res);
         let nowDate = new Date();
-        if ((nowDate.getTime() / 1000 - oldDate.getTime() / 1000) < 0) {
-            return `未知时间`;
+        if ((nowDate.getTime() / 1000 / 60 - oldDate.getTime() / 1000 / 60) < 0) {
+            return `error`;
         }
-        if ((nowDate.getTime() / 1000 - oldDate.getTime() / 1000) >= 0 && (nowDate.getTime() / 1000 - oldDate.getTime() / 1000) <= 5*60) {
+        if ((nowDate.getTime() / 1000 / 60 - oldDate.getTime() / 1000 / 60) <= 5) {
             return `刚刚`;
         }
         if ((nowDate.getTime() / 1000 / 60 - oldDate.getTime() / 1000 / 60) > 5 && (nowDate.getTime() / 1000 / 60 - oldDate.getTime() / 1000 / 60) <= 60) {

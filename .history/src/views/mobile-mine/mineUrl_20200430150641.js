@@ -111,10 +111,10 @@ export default {
             data: params
         })
     },
-    getCompateEquipmentList(params) {
+    getCompateEquipmentList(params,pageNum) {
         return axios({
             method: 'POST',
-            url: `${baseUrl}/sm/compateEquipment/list`,
+            url: `${baseUrl}/sm/compateEquipment/page/${pageNum}`,
             data: params
         })
     },
@@ -123,13 +123,6 @@ export default {
             method: 'post',
             url: `${baseUrl}/sm/compateEquipment/add`,
             data: params
-        })
-    },
-    editCompateEquipment(params) {
-        return axios({
-            method: 'put',
-            url: `${baseUrl}/sm/compateEquipment/edit`,
-            params: params
         })
     },
 }

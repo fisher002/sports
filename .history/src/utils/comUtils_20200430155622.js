@@ -38,7 +38,7 @@ export default {
         let oldDate = new Date(`${testDate.getFullYear()}-${testDate.getUTCMonth() + 1}-${testDate.getUTCDate()} ${testDate.getUTCHours()}:${testDate.getUTCMinutes()}`);
         let nowDate = new Date();
         if ((nowDate.getTime() / 1000 - oldDate.getTime() / 1000) < 0) {
-            return `未知时间`;
+            return `未知错误`;
         }
         if ((nowDate.getTime() / 1000 - oldDate.getTime() / 1000) >= 0 && (nowDate.getTime() / 1000 - oldDate.getTime() / 1000) <= 5*60) {
             return `刚刚`;

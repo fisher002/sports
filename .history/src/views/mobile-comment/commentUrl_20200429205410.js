@@ -9,7 +9,7 @@ export default {
             data: params
         })
     },
-    getCompateCommentPageList(params,pageNum) {
+    getCompateCommentPageList(params) {
         return axios({
             method: 'POST',
             url: `${baseUrl}/sm/compateComment/page/${pageNum}`,
