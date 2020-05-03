@@ -25,7 +25,6 @@ import chatusers from '@/views/mobile-tournament/chatusers'
 // 管理员路由
 import adminIndex from '@/views/mobile-admin/adminIndex'
 import adminlogin from '@/views/mobile-admin/admin-login/adminLogin'
-// 赛前
 import preindex from '@/views/mobile-admin/admin-pregame/preindex'
 import releasegames from '@/views/mobile-admin/admin-pregame/releasegames'
 import listgames from '@/views/mobile-admin/admin-pregame/listgames'
@@ -37,23 +36,16 @@ import playermanagement from '@/views/mobile-admin/admin-pregame/playermanage/pl
 import listcompatereferee from '@/views/mobile-admin/admin-pregame/refereemanage/listcompatereferee'
 import refereemanagement from '@/views/mobile-admin/admin-pregame/refereemanage/refereemanagement'
 import listequipment from '@/views/mobile-admin/admin-pregame/equipmentmanage/listequipment'
-// 赛中
 import middleindex from '@/views/mobile-admin/admin-middle/middleindex'
 import listcompates from '@/views/mobile-admin/admin-middle/compatescore/listcompates'
 import listcompatescore from '@/views/mobile-admin/admin-middle/compatescore/listcompatescore'
 import listfinalperson from '@/views/mobile-admin/admin-middle/finalperson/listfinalperson'
-import detailfinalperson from '@/views/mobile-admin/admin-middle/finalperson/detailfinalperson'
-// 赛后
 import afterindex from '@/views/mobile-admin/admin-after/afterindex'
 import listbackmsg from '@/views/mobile-admin/admin-after/feedbackmsg/listbackmsg'
 import listcompatewonderful from '@/views/mobile-admin/admin-after/compatewonderful/listcompatewonderful'
 import detailwonderful from '@/views/mobile-admin/admin-after/compatewonderful/detailwonderful'
 import listcompatenews from '@/views/mobile-admin/admin-after/compatenews/listcompatenews'
 import detailcomnews from '@/views/mobile-admin/admin-after/compatenews/detailcomnews'
-import listoutlaycompate from '@/views/mobile-admin/admin-after/compateoutlay/listoutlaycompate'
-import detailoutlay from '@/views/mobile-admin/admin-after/compateoutlay/detailoutlay'
-import listoutlaysum from '@/views/mobile-admin/admin-after/outlaysum/listoutlaysum'
-import detailsumlist from '@/views/mobile-admin/admin-after/outlaysum/detailsumlist'
 
 Vue.use(Router)
 
@@ -319,22 +311,6 @@ export default new Router({
           component: listcompatescore
         },
         {
-          path: '/admin/listfinalperson',
-          name: 'listfinalperson',
-          meta: {
-            label: "赛事列表"
-          },
-          component: listfinalperson
-        },
-        {
-          path: '/admin/detailfinalperson',
-          name: 'detailfinalperson',
-          meta: {
-            label: "决赛名单添加"
-          },
-          component: detailfinalperson
-        },
-        {
           path: '/admin/afterindex',
           name: 'afterindex',
           meta: {
@@ -381,38 +357,6 @@ export default new Router({
             label: "赛事新闻发布"
           },
           component: detailcomnews
-        },
-        {
-          path: '/admin/listoutlaycompate',
-          name: 'listoutlaycompate',
-          meta: {
-            label: "赛事列表"
-          },
-          component: listoutlaycompate
-        },
-        {
-          path: '/admin/detailoutlay',
-          name: 'detailoutlay',
-          meta: {
-            label: "赛事经费添加"
-          },
-          component: detailoutlay
-        },
-        {
-          path: '/admin/listoutlaysum',
-          name: 'listoutlaysum',
-          meta: {
-            label: "赛事列表"
-          },
-          component: listoutlaysum
-        },
-        {
-          path: '/admin/detailsumlist',
-          name: 'detailsumlist',
-          meta: {
-            label: "赛事统计列表"
-          },
-          component: detailsumlist
         },
       ]
     },

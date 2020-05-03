@@ -27,6 +27,6 @@ export default [
         path: "/admin/listoutlaysum",
         label: "赛事经费统计",
         icon: "gold-coin-o",
-        id: "5"
+        id: "4"
     },
 ]

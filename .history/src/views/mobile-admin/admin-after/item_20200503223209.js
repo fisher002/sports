@@ -19,14 +19,8 @@ export default [
     },
     {
         path: "/admin/listoutlaycompate",
-        label: "赛事经费添加",
-        icon: "gold-coin-o",
-        id: "4"
-    },
-    {
-        path: "/admin/listoutlaysum",
         label: "赛事经费统计",
         icon: "gold-coin-o",
-        id: "5"
+        id: "4"
     },
 ]

@@ -52,8 +52,6 @@ import listcompatenews from '@/views/mobile-admin/admin-after/compatenews/listco
 import detailcomnews from '@/views/mobile-admin/admin-after/compatenews/detailcomnews'
 import listoutlaycompate from '@/views/mobile-admin/admin-after/compateoutlay/listoutlaycompate'
 import detailoutlay from '@/views/mobile-admin/admin-after/compateoutlay/detailoutlay'
-import listoutlaysum from '@/views/mobile-admin/admin-after/outlaysum/listoutlaysum'
-import detailsumlist from '@/views/mobile-admin/admin-after/outlaysum/detailsumlist'
 
 Vue.use(Router)
 
@@ -394,25 +392,9 @@ export default new Router({
           path: '/admin/detailoutlay',
           name: 'detailoutlay',
           meta: {
-            label: "赛事经费添加"
+            label: "赛事经费统计"
           },
           component: detailoutlay
-        },
-        {
-          path: '/admin/listoutlaysum',
-          name: 'listoutlaysum',
-          meta: {
-            label: "赛事列表"
-          },
-          component: listoutlaysum
-        },
-        {
-          path: '/admin/detailsumlist',
-          name: 'detailsumlist',
-          meta: {
-            label: "赛事统计列表"
-          },
-          component: detailsumlist
         },
       ]
     },
