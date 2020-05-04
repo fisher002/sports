@@ -9,7 +9,7 @@
               <div class="time">{{formatDate(item.createDate)}}</div>
             </div>
             <div
-              style="width:100%"
+              style="100%"
               v-html="item.mediaContent"
               v-if="item.mediaType === 'news' || item.mediaType === 'text'"
             ></div>
@@ -78,7 +78,6 @@ export default {
             this.isLoading = false;
             if (type === "0") {
               this.data.list.push(...res.data.data.list);
-              this.data.hasNextPage = res.data.data.hasNextPage;
               return;
             }
             this.data = res.data.data;
@@ -89,6 +88,7 @@ export default {
           this.isLoading = false;
         },
         res => {
+          Toast(res.data.msg);
           this.loading = false;
           this.isLoading = false;
         }

@@ -100,7 +100,7 @@ export default {
       api.getSchoolCompatePageList(params, this.pageNum).then(
         res => {
           this.isLoading = false;
-          this.loading = false;
+          this.loading = !this.loading;
           if (res.data.code == 10000) {
             if (type === "0") {
               this.data.list.push(...res.data.data.list);
@@ -114,7 +114,7 @@ export default {
         },
         res => {
           this.isLoading = false;
-          this.loading = false;
+          this.loading = !this.loading;
         }
       );
     },

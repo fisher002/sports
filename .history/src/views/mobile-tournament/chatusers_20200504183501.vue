@@ -9,7 +9,7 @@
               <div class="time">{{formatDate(item.createDate)}}</div>
             </div>
             <div
-              style="width:100%"
+              style="100%"
               v-html="item.mediaContent"
               v-if="item.mediaType === 'news' || item.mediaType === 'text'"
             ></div>

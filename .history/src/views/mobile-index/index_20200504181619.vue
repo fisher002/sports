@@ -2,8 +2,11 @@
   <div class="game-list">
     <van-pull-refresh v-model="isLoading" success-text="刷新成功" @refresh="onRefresh">
       <div class="drop-menu">
+        <van-dropdown-menu style="width:30%">
+          <van-dropdown-item v-model="values" :options="schoolData" @change="getValue" />
+        </van-dropdown-menu>
         <van-search
-          style="width:100%"
+          style="width:70%"
           show-action
           v-model="params.compateEventName"
           placeholder="请输入比赛名称"
@@ -14,13 +17,18 @@
         </van-search>
       </div>
       <div class="data-list" v-if="data.list && data.list.length > 0">
-        <div class="list-item" v-for="item in data.list" :key="item.id" @click="toDeatil(item)">
+        <div class="list-item" v-for="item in data.list" :key="item.id" @click="toDeatil(item.id)">
           <div class="item-title">{{item.schoolName}}</div>
           <div class="item-content">
             <div class="item-top font-size14">
-              <div>{{item.compateEventName}}</div>
+              <div>名称：{{item.compateEventName}}</div>
               <div>场地：{{item.location}}</div>
               <div v-html="formatStatus(item.status)"></div>
+            </div>
+            <div class="item-top font-size13">
+              <div>{{`仅${item.sexLimit == 'M' ? '男' : '女'}生`}}</div>
+              <div>限制人数：{{item.quantityLimit}}人</div>
+              <div>已报名人数：{{item.num}}人</div>
             </div>
             <div class="item-top font-size13 color-g">
               <div>开始时间：{{formatDate(item.startTime)}}</div>
@@ -47,16 +55,23 @@
 <script>
 import utils from "@/utils/comUtils";
 import { Toast } from "vant";
-import api from "./outlayUrl";
+import api from "./indexUrl";
 export default {
   data() {
     return {
       loading: false,
       isLoading: false,
+      values: 0,
+      schoolData: [],
       data: "",
       pageNum: 1,
       params: {
-        status: "ed",
+        compateEventParentId: "",
+        compateEventId: "",
+        sexLimit: "",
+        startTime: "",
+        endTime: "",
+        status: "",
         schoolId: "",
         compateEventName: "" // 关键字
       }
@@ -66,11 +81,49 @@ export default {
     this.checkLogin();
   },
   methods: {
+    /**获取学校数据 */
+    getSchoolList() {
+      utils.getSchoolList().then(
+        res => {
+          if (res.data.code == 10000) {
+            res.data.data.forEach(e => {
+              let demo = {
+                text: e.schoolName,
+                value: e.id
+              };
+              this.schoolData.push(demo);
+            });
+          }
+        },
+        res => {
+          Toast(res.data.msg);
+        }
+      );
+    },
     /**检查是否登录 */
     checkLogin() {
+      this.getSchoolList();
       if (utils.checkLogin()) {
+        this.schoolData = [
+          {
+            text: "我的学校",
+            value: 0
+          },
+          {
+            text: "所有学校",
+            value: "n"
+          }
+        ];
         // 获取对应比赛项目
         this.params.schoolId = sessionStorage.getItem("schoolId");
+        this.getSchoolCompatePageList();
+      } else {
+        this.schoolData = [
+          {
+            text: "所有学校",
+            value: 0
+          }
+        ];
         this.getSchoolCompatePageList();
       }
     },
@@ -80,7 +133,7 @@ export default {
       api.getSchoolCompatePageList(params, this.pageNum).then(
         res => {
           this.isLoading = false;
-          this.loading = false;
+          this.loading = !this.loading;
           if (res.data.code == 10000) {
             if (type === "0") {
               this.data.list.push(...res.data.data.list);
@@ -109,6 +162,23 @@ export default {
         this.getSchoolCompatePageList("0");
       }
     },
+    /**下拉菜单回调 */
+    getValue(val) {
+      this.pageNum = 1;
+      for (let i in this.params) {
+        this.params[i] = "";
+      }
+      if (val > 0) {
+        this.params.schoolId = `${val}`;
+      }
+      if (val == 0) {
+        this.params.schoolId = sessionStorage.getItem("schoolId");
+      }
+      if (val === "n") {
+        this.params.schoolId = "";
+      }
+      this.getSchoolCompatePageList();
+    },
     /**onSearch搜索 */
     onSearch() {
       this.pageNum = 1;
@@ -120,11 +190,11 @@ export default {
       this.getSchoolCompatePageList();
     },
     /**toDeatil */
-    toDeatil(item) {
+    toDeatil(id) {
       this.$router.push({
-        path: "/admin/detailoutlay",
+        path: "/user/detailcompate",
         query: {
-          compateId: `${item.id}`
+          compateId: `${id}`
         }
       });
     },

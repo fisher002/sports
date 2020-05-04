@@ -14,11 +14,11 @@
         </van-search>
       </div>
       <div class="data-list" v-if="data.list && data.list.length > 0">
-        <div class="list-item" v-for="item in data.list" :key="item.id" @click="toDeatil(item)">
+        <div class="list-item" v-for="item in data.list" :key="item.id" @click="toDeatil(item.id)">
           <div class="item-title">{{item.schoolName}}</div>
           <div class="item-content">
             <div class="item-top font-size14">
-              <div>{{item.compateEventName}}</div>
+              <div>名称：{{item.compateEventName}}</div>
               <div>场地：{{item.location}}</div>
               <div v-html="formatStatus(item.status)"></div>
             </div>
@@ -47,18 +47,19 @@
 <script>
 import utils from "@/utils/comUtils";
 import { Toast } from "vant";
-import api from "./outlayUrl";
+import api from "./commentUrl";
 export default {
   data() {
     return {
       loading: false,
       isLoading: false,
+      values: 0,
       data: "",
       pageNum: 1,
       params: {
-        status: "ed",
+        status: "",
         schoolId: "",
-        compateEventName: "" // 关键字
+        compateEventName: ""
       }
     };
   },
@@ -79,8 +80,8 @@ export default {
       let params = utils.checkParams(this.params);
       api.getSchoolCompatePageList(params, this.pageNum).then(
         res => {
+          this.loading = !this.loading;
           this.isLoading = false;
-          this.loading = false;
           if (res.data.code == 10000) {
             if (type === "0") {
               this.data.list.push(...res.data.data.list);
@@ -94,7 +95,8 @@ export default {
         },
         res => {
           this.isLoading = false;
-          this.loading = false;
+          this.loading = !this.loading;
+          Toast(res.data.msg);
         }
       );
     },
@@ -119,12 +121,12 @@ export default {
       this.pageNum = 1;
       this.getSchoolCompatePageList();
     },
-    /**toDeatil */
-    toDeatil(item) {
+    /**查看评论 */
+    toDeatil(id) {
       this.$router.push({
-        path: "/admin/detailoutlay",
+        path: "/user/commentusers",
         query: {
-          compateId: `${item.id}`
+          compateId: `${id}`
         }
       });
     },
@@ -160,6 +162,9 @@ export default {
     display: flex;
     padding: 0 10px;
     flex-wrap: wrap;
+    .sort-title {
+      display: flex;
+    }
     .list-item {
       display: flex;
       width: 100%;
@@ -194,5 +199,8 @@ export default {
       line-height: 18px !important;
     }
   }
+}
+.van-empty {
+  padding: 0 !important;
 }
 </style>

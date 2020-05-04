@@ -114,7 +114,7 @@ export default {
         },
         res => {
           this.isLoading = false;
-          this.loading = false;
+          this.loading = !this.loading;
         }
       );
     },

@@ -9,7 +9,7 @@
               <div class="time">{{formatDate(item.createDate)}}</div>
             </div>
             <div
-              style="width:100%"
+              style="100%"
               v-html="item.mediaContent"
               v-if="item.mediaType === 'news' || item.mediaType === 'text'"
             ></div>
@@ -74,11 +74,10 @@ export default {
       api.getChatPageList(compateId, this.pageNum).then(
         res => {
           if (res.data.code == 10000) {
-            this.loading = false;
+            this.loading = !this.loading;
             this.isLoading = false;
             if (type === "0") {
               this.data.list.push(...res.data.data.list);
-              this.data.hasNextPage = res.data.data.hasNextPage;
               return;
             }
             this.data = res.data.data;
@@ -89,7 +88,8 @@ export default {
           this.isLoading = false;
         },
         res => {
-          this.loading = false;
+          Toast(res.data.msg);
+          this.loading = !this.loading;
           this.isLoading = false;
         }
       );
