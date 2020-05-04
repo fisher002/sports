@@ -28,22 +28,21 @@ export default {
     this.ctx = canvas.getContext("2d");
     this.ctx.shadowBlur = 30;
     this.ctx.shadowColor = "#ffffff";
-    let grd = this.ctx.createRadialGradient(75, 50, 5, 90, 60, 100); // 创建一个径向/圆渐变
-    grd.addColorStop(0, "blue");
-    grd.addColorStop(1, "white");
-    this.ctx.fillStyle = grd;
+    // let grd = this.ctx.createRadialGradient(75, 50, 5, 90, 60, 100); // 创建一个径向/圆渐变
+    // grd.addColorStop(0, "blue");
+    // grd.addColorStop(1, "white");
+    // this.ctx.fillStyle = grd;
     let i = 0;
     let timer = setInterval(() => {
+      let x = this.autoX(),
+        y = this.autoY();
       i++;
+      let grd = this.ctx.createRadialGradient(x, y, 5, 90, 60, 100); // 创建一个径向/圆渐变
+      grd.addColorStop(0, "blue");
+      grd.addColorStop(1, "white");
+      this.ctx.fillStyle = grd;
       this.ctx.beginPath();
-      this.ctx.arc(
-        this.autoX(),
-        this.autoY(),
-        this.autoR(),
-        0,
-        2 * Math.PI,
-        true
-      );
+      this.ctx.arc(x, y, this.autoR(), 0, 2 * Math.PI, true);
       this.ctx.fill();
       this.ctx.stroke();
       if (i == 25) {

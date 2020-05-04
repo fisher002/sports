@@ -28,7 +28,7 @@ export default {
     this.ctx = canvas.getContext("2d");
     this.ctx.shadowBlur = 30;
     this.ctx.shadowColor = "#ffffff";
-    let grd = this.ctx.createRadialGradient(75, 50, 5, 90, 60, 100); // 创建一个径向/圆渐变
+    let grd = this.ctx.createRadialGradient(300, 600, 5, 90, 60, 100); // 创建一个径向/圆渐变
     grd.addColorStop(0, "blue");
     grd.addColorStop(1, "white");
     this.ctx.fillStyle = grd;

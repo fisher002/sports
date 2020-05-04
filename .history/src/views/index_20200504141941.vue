@@ -13,8 +13,7 @@ export default {
   data() {
     return {
       height: null,
-      width: null,
-      ctx: null
+      width: null
     };
   },
   created() {
@@ -25,31 +24,7 @@ export default {
     let canvas = this.$refs.myCanvas;
     canvas.height = this.height;
     canvas.width = this.width;
-    this.ctx = canvas.getContext("2d");
-    this.ctx.shadowBlur = 30;
-    this.ctx.shadowColor = "#ffffff";
-    let grd = this.ctx.createRadialGradient(75, 50, 5, 90, 60, 100); // 创建一个径向/圆渐变
-    grd.addColorStop(0, "blue");
-    grd.addColorStop(1, "white");
-    this.ctx.fillStyle = grd;
-    let i = 0;
-    let timer = setInterval(() => {
-      i++;
-      this.ctx.beginPath();
-      this.ctx.arc(
-        this.autoX(),
-        this.autoY(),
-        this.autoR(),
-        0,
-        2 * Math.PI,
-        true
-      );
-      this.ctx.fill();
-      this.ctx.stroke();
-      if (i == 25) {
-        clearInterval(timer);
-      }
-    }, 1000);
+    this.createSrc(canvas);
   },
   methods: {
     /**获取屏幕宽高 */
@@ -57,23 +32,38 @@ export default {
       this.height = document.documentElement.clientHeight;
       this.width = document.documentElement.clientWidth;
     },
+    /**自定义创建圆 */
+    createSrc(canvas) {
+      let x = 0,y = 0;
+      let ctx = canvas.getContext("2d");
+      ctx.shadowBlur = 30;
+      ctx.shadowColor = "#ffffff";
+      let grd = ctx.createRadialGradient(75, 50, 5, 90, 60, 100); // 创建一个径向/圆渐变
+      grd.addColorStop(0, "blue");
+      grd.addColorStop(1, "white");
+      ctx.fillStyle = grd;
+      ctx.beginPath();
+      let timer = setInterval(() => {
+        y = this.autoY();
+      }, 1000);
+      ctx.arc(this.autoX(), y, 50, 0, 2 * Math.PI, true);
+      ctx.fill();
+      ctx.stroke();
+    },
     /**横向变化 */
     autoX() {
       let x1 = 0;
-      x1 = Math.floor(Math.random() * (this.width - 50)) + 50;
+      x1 = Math.floor(Math.random() * this.width) + 50;
       return x1;
     },
     /**纵向变化 */
     autoY() {
-      let y1 = 0;
-      y1 = Math.floor(Math.random() * (this.height - 50)) + 50;
+      let y1 = this.height + 50;
+      y1 -= 1;
+      if (y1 == -100) {
+        y1 = this.height + 50;
+      }
       return y1;
-    },
-    /**半径变化 */
-    autoR() {
-      let r1 = 0;
-      r1 = Math.floor(Math.random() * 50) + 5;
-      return r1;
     }
   },
   destroyed() {

@@ -30,6 +30,7 @@ export default {
     this.ctx.shadowColor = "#ffffff";
     let grd = this.ctx.createRadialGradient(75, 50, 5, 90, 60, 100); // 创建一个径向/圆渐变
     grd.addColorStop(0, "blue");
+    grd.addColorStop(0.5, "blue");
     grd.addColorStop(1, "white");
     this.ctx.fillStyle = grd;
     let i = 0;
@@ -46,7 +47,7 @@ export default {
       );
       this.ctx.fill();
       this.ctx.stroke();
-      if (i == 25) {
+      if (i == 15) {
         clearInterval(timer);
       }
     }, 1000);

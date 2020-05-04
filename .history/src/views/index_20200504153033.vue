@@ -36,6 +36,7 @@ export default {
     let timer = setInterval(() => {
       i++;
       this.ctx.beginPath();
+      ctx.globalAlpha = Math.floor(Math.random() * 0) + 1;
       this.ctx.arc(
         this.autoX(),
         this.autoY(),
@@ -46,7 +47,7 @@ export default {
       );
       this.ctx.fill();
       this.ctx.stroke();
-      if (i == 25) {
+      if (i == 30) {
         clearInterval(timer);
       }
     }, 1000);

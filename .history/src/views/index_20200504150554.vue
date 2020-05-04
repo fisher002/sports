@@ -14,7 +14,7 @@ export default {
     return {
       height: null,
       width: null,
-      ctx: null
+      y: 0
     };
   },
   created() {
@@ -25,31 +25,22 @@ export default {
     let canvas = this.$refs.myCanvas;
     canvas.height = this.height;
     canvas.width = this.width;
-    this.ctx = canvas.getContext("2d");
-    this.ctx.shadowBlur = 30;
-    this.ctx.shadowColor = "#ffffff";
-    let grd = this.ctx.createRadialGradient(75, 50, 5, 90, 60, 100); // 创建一个径向/圆渐变
+    let ctx = canvas.getContext("2d");
+    ctx.shadowBlur = 30;
+    ctx.shadowColor = "#ffffff";
+    let grd = ctx.createRadialGradient(75, 50, 5, 90, 60, 100); // 创建一个径向/圆渐变
     grd.addColorStop(0, "blue");
     grd.addColorStop(1, "white");
-    this.ctx.fillStyle = grd;
-    let i = 0;
-    let timer = setInterval(() => {
-      i++;
-      this.ctx.beginPath();
-      this.ctx.arc(
-        this.autoX(),
-        this.autoY(),
-        this.autoR(),
-        0,
-        2 * Math.PI,
-        true
-      );
-      this.ctx.fill();
-      this.ctx.stroke();
-      if (i == 25) {
-        clearInterval(timer);
+    ctx.fillStyle = grd;
+    ctx.beginPath();
+    ctx.arc(this.autoX(), setInterval(()=>{
+      this.y += 1;
+      if(this.y == this.height - 50) {
+        this.y = 0;
       }
-    }, 1000);
+    },1000), 50, 0, 2 * Math.PI, true);
+    ctx.fill();
+    ctx.stroke();
   },
   methods: {
     /**获取屏幕宽高 */
@@ -65,15 +56,20 @@ export default {
     },
     /**纵向变化 */
     autoY() {
-      let y1 = 0;
-      y1 = Math.floor(Math.random() * (this.height - 50)) + 50;
-      return y1;
-    },
-    /**半径变化 */
-    autoR() {
-      let r1 = 0;
-      r1 = Math.floor(Math.random() * 50) + 5;
-      return r1;
+      this.y = 50;
+      let timer = setInterval(() => {
+        this.y += 1;
+      }, 1000);
+      if (this.y == this.height - 50) {
+        clearInterval(timer);
+        let timer1 = setInterval(() => {
+          this.y -= 1;
+        }, 1000);
+        if(this.y == 50) {
+          clearInterval(timer1);
+          setInterval(timer,1000);
+        }
+      }
     }
   },
   destroyed() {

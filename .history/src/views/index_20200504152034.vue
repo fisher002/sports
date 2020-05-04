@@ -46,7 +46,7 @@ export default {
       );
       this.ctx.fill();
       this.ctx.stroke();
-      if (i == 25) {
+      if (i == 30) {
         clearInterval(timer);
       }
     }, 1000);
