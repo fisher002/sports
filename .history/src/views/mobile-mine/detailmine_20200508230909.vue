@@ -25,8 +25,6 @@
           readonly
         />
         <van-field label="学校" :value="userData.schoolName" label-align="right" readonly />
-        <van-field v-model="userData.studentCode" label="学号" label-align="right" readonly />
-        <van-field v-model="userData.department" label="院系" readonly label-align="right" />
       </van-form>
       <div style="margin: 16px;">
         <van-button plain hairline type="info" @click="back()">返回</van-button>

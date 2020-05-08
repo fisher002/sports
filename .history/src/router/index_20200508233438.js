@@ -44,8 +44,6 @@ import listcompatescore from '@/views/mobile-admin/admin-middle/compatescore/lis
 import listfinalperson from '@/views/mobile-admin/admin-middle/finalperson/listfinalperson'
 import detailfinalperson from '@/views/mobile-admin/admin-middle/finalperson/detailfinalperson'
 import listcompateEquipment from '@/views/mobile-admin/admin-middle/compateequipment/listcompateEquipment'
-import listimgscroll from '@/views/mobile-admin/admin-middle/autoscroll/listimgscroll'
-import addimgscroll from '@/views/mobile-admin/admin-middle/autoscroll/addimgscroll'
 // 赛后
 import afterindex from '@/views/mobile-admin/admin-after/afterindex'
 import listbackmsg from '@/views/mobile-admin/admin-after/feedbackmsg/listbackmsg'
@@ -341,25 +339,9 @@ export default new Router({
           path: '/admin/listcompateEquipment',
           name: 'listcompateEquipment',
           meta: {
-            label: "设备管理列表"
+            label: "设备管理"
           },
           component: listcompateEquipment
-        },
-        {
-          path: '/admin/addimgscroll',
-          name: 'addimgscroll',
-          meta: {
-            label: "轮播图添加"
-          },
-          component: addimgscroll
-        },
-        {
-          path: '/admin/listimgscroll',
-          name: 'listimgscroll',
-          meta: {
-            label: "轮播图列表"
-          },
-          component: listimgscroll
         },
         {
           path: '/admin/afterindex',

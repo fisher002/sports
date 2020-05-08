@@ -109,7 +109,7 @@
         />
       </van-popup>
       <van-field
-        v-model="userData.studentCode"
+        v-model="userData.name"
         label="学号"
         placeholder="请填写学号"
         clearable
@@ -118,7 +118,7 @@
         type="number"
       />
       <van-field
-        v-model="userData.department"
+        v-model="userData.name"
         label="院系"
         placeholder="请填写院系"
         clearable

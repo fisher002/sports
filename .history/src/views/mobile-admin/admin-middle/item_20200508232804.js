@@ -14,19 +14,7 @@ export default [
     {
         path: "/admin/listcompateEquipment",
         label: "设备管理",
-        icon: "setting-o",
+        icon: "edit",
         id: "3"
-    },
-    {
-        path: "/admin/addimgscroll",
-        label: "首页轮播图添加",
-        icon: "add-o",
-        id: "4"
-    },
-    {
-        path: "/admin/listimgscroll",
-        label: "轮播图管理",
-        icon: "photo-o",
-        id: "5"
     }
 ]

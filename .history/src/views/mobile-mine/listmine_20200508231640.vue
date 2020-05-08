@@ -229,7 +229,6 @@ export default {
     .msg-detail {
       width: 100%;
       display: flex;
-      border-bottom: 1px #f1eaea solid;
       .head-img {
         width: 25%;
         display: flex;

@@ -62,7 +62,6 @@
           :min-date="minDate"
           :max-date="maxDate"
           :formatter="formatter"
-          @change="checkDate()"
           @confirm="showStartDatePicker = false"
           @cancel="showStartDatePicker = false"
         />
@@ -83,8 +82,7 @@
           :min-date="minDate"
           :max-date="maxDate"
           :formatter="formatter"
-          @change="checkDate()"
-          @confirm="showEndDatePicker = false"
+          @confirm="checkEndDate()"
           @cancel="showEndDatePicker = false"
         />
       </van-popup>
@@ -213,11 +211,12 @@ export default {
       this.data.rule = value;
     },
     /**赛事时间校验 */
-    checkDate() {
+    checkEndDate() {
+      this.showEndDatePicker = false;
       if(this.data.startTime && this.data.endTime) {
         if(new Date(this.data.endTime).getTime() < new Date(this.data.startTime).getTime()) {
           this.data.endTime = "";
-          Toast('结束时间小于开始时间，请重新选择');
+          Toast('结束时间不可以小于开始时间，请重新选择');
         }
       }
     },

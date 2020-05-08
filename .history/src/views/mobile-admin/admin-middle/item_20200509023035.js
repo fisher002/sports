@@ -21,12 +21,12 @@ export default [
         path: "/admin/addimgscroll",
         label: "首页轮播图添加",
         icon: "add-o",
-        id: "4"
+        id: "3"
     },
     {
         path: "/admin/listimgscroll",
-        label: "轮播图管理",
+        label: "轮播图列表",
         icon: "photo-o",
-        id: "5"
+        id: "3"
     }
 ]
