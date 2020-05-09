@@ -2,11 +2,8 @@
   <div class="game-list">
     <van-pull-refresh v-model="isLoading" success-text="刷新成功" @refresh="onRefresh">
       <div class="drop-menu">
-        <van-dropdown-menu style="width:30%">
-          <van-dropdown-item v-model="values" :options="schoolData" @change="getValue" />
-        </van-dropdown-menu>
         <van-search
-          style="width:70%"
+          style="width:100%"
           show-action
           v-model="params.compateEventName"
           placeholder="请输入比赛名称"
@@ -16,32 +13,36 @@
           </template>
         </van-search>
       </div>
-      <div v-if="scrolls">
-        <van-swipe class="my-swipe" :autoplay="5000" indicator-color="white">
-          <van-swipe-item v-for="item in scrolls" :key="item.id">
-            <img style="width:100%" height="160" :src="returnImg(item.url)"/>
-          </van-swipe-item>
-        </van-swipe>
-      </div>
       <div class="data-list" v-if="data.list && data.list.length > 0">
         <div class="list-item" v-for="item in data.list" :key="item.id" @click="toDeatil(item.id)">
-          <div class="item-title">{{item.schoolName}}</div>
-          <div class="item-content">
-            <div class="item-top font-size14">
-              <div>名称：{{item.compateEventName}}</div>
-              <div>场地：{{item.location}}</div>
-              <div v-html="formatStatus(item.status)"></div>
+          <van-swipe-cell :disabled="false" style="width:100%">
+            <div class="item-title">{{item.schoolName}}</div>
+            <div class="item-content">
+              <div class="item-top font-size14">
+                <div>名称：{{item.compateEventName}}</div>
+                <div>场地：{{item.location}}</div>
+                <div v-html="formatStatus(item.status)"></div>
+              </div>
+              <div class="item-top font-size13">
+                <div>{{`仅${item.sexLimit == 'M' ? '男' : '女'}生`}}</div>
+                <div>限制人数：{{item.quantityLimit}}人</div>
+                <div>已报名人数：{{item.num}}人</div>
+              </div>
+              <div class="item-top font-size13 color-g">
+                <div>开始时间：{{formatDate(item.startTime)}}</div>
+                <div>结束时间：{{formatDate(item.endTime)}}</div>
+              </div>
             </div>
-            <div class="item-top font-size13">
-              <div>{{`仅${item.sexLimit == 'M' ? '男' : '女'}生`}}</div>
-              <div>限制人数：{{item.quantityLimit}}人</div>
-              <div>已报名人数：{{item.num}}人</div>
-            </div>
-            <div class="item-top font-size13 color-g">
-              <div>开始时间：{{formatDate(item.startTime)}}</div>
-              <div>结束时间：{{formatDate(item.endTime)}}</div>
-            </div>
-          </div>
+            <template #right>
+              <van-button
+                square
+                text="删除"
+                type="danger"
+                @click="delCompate(item.id)"
+                class="delete-button"
+              />
+            </template>
+          </van-swipe-cell>
         </div>
         <div class="load-btn" v-show="data.hasNextPage">
           <van-button
@@ -62,16 +63,14 @@
 <script>
 import utils from "@/utils/comUtils";
 import { Toast } from "vant";
-import api from "./indexUrl";
+import { Dialog } from "vant";
+import api from "../pregameUrl";
 export default {
   data() {
     return {
       loading: false,
       isLoading: false,
-      values: 0,
-      schoolData: [],
       data: "",
-      scrolls: "",
       pageNum: 1,
       params: {
         compateEventParentId: "",
@@ -89,64 +88,12 @@ export default {
     this.checkLogin();
   },
   methods: {
-    /**获取轮播图数据 */
-    getScrollPageList(id) {
-      let params = {schoolId: id}
-      api.getScrollPageList(params, 1).then(
-        res => {
-          if (res.data.code == 10000) {
-            this.scrolls = res.data.data.list;
-          }
-        },
-        res => {}
-      );
-    },
-    /**获取学校数据 */
-    getSchoolList() {
-      utils.getSchoolList().then(
-        res => {
-          if (res.data.code == 10000) {
-            res.data.data.forEach(e => {
-              let demo = {
-                text: e.schoolName,
-                value: e.id
-              };
-              this.schoolData.push(demo);
-            });
-          }
-        },
-        res => {
-          Toast(res.data.msg);
-        }
-      );
-    },
     /**检查是否登录 */
     checkLogin() {
-      this.getSchoolList();
       if (utils.checkLogin()) {
-        this.schoolData = [
-          {
-            text: "我的学校",
-            value: 0
-          },
-          {
-            text: "所有学校",
-            value: "n"
-          }
-        ];
         // 获取对应比赛项目
         this.params.schoolId = sessionStorage.getItem("schoolId");
         this.getSchoolCompatePageList();
-        this.getScrollPageList(this.params.schoolId);
-      } else {
-        this.schoolData = [
-          {
-            text: "所有学校",
-            value: 0
-          }
-        ];
-        this.getSchoolCompatePageList();
-        this.getScrollPageList();
       }
     },
     /**获取比赛项目信息 */
@@ -184,23 +131,6 @@ export default {
         this.getSchoolCompatePageList("0");
       }
     },
-    /**下拉菜单回调 */
-    getValue(val) {
-      this.pageNum = 1;
-      for (let i in this.params) {
-        this.params[i] = "";
-      }
-      if (val > 0) {
-        this.params.schoolId = `${val}`;
-      }
-      if (val == 0) {
-        this.params.schoolId = sessionStorage.getItem("schoolId");
-      }
-      if (val === "n") {
-        this.params.schoolId = "";
-      }
-      this.getSchoolCompatePageList();
-    },
     /**onSearch搜索 */
     onSearch() {
       this.pageNum = 1;
@@ -210,19 +140,28 @@ export default {
     onRefresh() {
       this.pageNum = 1;
       this.getSchoolCompatePageList();
-      this.getScrollPageList(this.params.schoolId);
+    },
+    /**删除我的评论 */
+    delCompate(id) {
+      Dialog.confirm({
+        message: "是否确认删除"
+      })
+        .then(() => {
+          api.delCompate({ id: id }).then(res => {
+            this.getSchoolCompatePageList();
+            Toast(res.data.msg);
+          });
+        })
+        .catch(() => {});
     },
     /**toDeatil */
     toDeatil(id) {
       this.$router.push({
-        path: "/user/detailcompate",
+        path: "/admin/registerpeople",
         query: {
           compateId: `${id}`
         }
       });
-    },
-    returnImg(url) {
-      return `${utils.returnUrl()}${url}`;
     },
     /**状态格式化 */
     formatStatus(res) {
@@ -288,7 +227,6 @@ export default {
       width: 100%;
       height: 20px;
       line-height: 18px !important;
-      padding-bottom: 10px;
     }
   }
 }
