@@ -47,6 +47,7 @@ import detailfinalperson from '@/views/mobile-admin/admin-middle/finalperson/det
 import listcompateEquipment from '@/views/mobile-admin/admin-middle/compateequipment/listcompateEquipment'
 import listimgscroll from '@/views/mobile-admin/admin-middle/autoscroll/listimgscroll'
 import addimgscroll from '@/views/mobile-admin/admin-middle/autoscroll/addimgscroll'
+import listimgscroll from '@/views/mobile-admin/admin-middle/autoscroll/listimgscroll'
 import listcompatecom from '@/views/mobile-admin/admin-middle/compatecomment/listcompatecom'
 import detailcomments from '@/views/mobile-admin/admin-middle/compatecomment/detailcomments'
 // 赛后

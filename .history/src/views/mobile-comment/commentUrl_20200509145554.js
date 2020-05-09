@@ -25,7 +25,7 @@ export default {
     },
     delComment(params) {
         return axios({
-            method: 'delete',
+            method: 'get',
             url: `${baseUrl}/sm/compateComment/delete`,
             params: params
         })

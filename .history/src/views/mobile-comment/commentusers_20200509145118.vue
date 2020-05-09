@@ -11,11 +11,7 @@
             <div class="right-content">{{item.commentContent}}</div>
             <div class="right-time">
               <span>{{formatDate(item.createDate)}}</span>
-              <span
-                class="font-blue"
-                v-show="checkMine(item.userId)"
-                @click="delComment(item.id)"
-              >删除</span>
+              <span v-show="checkMine(item.userInfo)" @click="delComment(item.id)">删除</span>
             </div>
           </div>
         </div>
@@ -51,7 +47,6 @@
 <script>
 import utils from "@/utils/comUtils";
 import { Toast } from "vant";
-import { Dialog } from "vant";
 import api from "./commentUrl";
 
 export default {
@@ -119,25 +114,22 @@ export default {
       );
     },
     /**检查是否为我的评论 */
-    checkMine(id) {
+    checkMine(info) {
       let userId = sessionStorage.getItem("userId");
-      if (userId === `${id}`) {
+      if (userId === `${info.id}`) {
         return true;
       }
       return false;
     },
     /**删除我的评论 */
     delComment(id) {
-      Dialog.confirm({
-        message: "是否确认删除"
-      })
-        .then(() => {
-          api.delComment({ id: id }).then(res => {
-            this.getCompateCommentPageList();
-            Toast(res.data.msg);
-          });
-        })
-        .catch(() => {});
+      api.delComment({ id: id }).then(
+        res => {
+          this.getCompateCommentPageList();
+          Toast(res.data.msg);
+        },
+        res => {}
+      );
     },
     /**加载更多 */
     toLoadMore() {
@@ -212,10 +204,6 @@ export default {
       width: 100%;
       text-align: left;
       color: gray;
-      .font-blue {
-        color: #5e5eff;
-        margin-left: 20px;
-      }
     }
   }
 }

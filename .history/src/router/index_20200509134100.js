@@ -47,8 +47,6 @@ import detailfinalperson from '@/views/mobile-admin/admin-middle/finalperson/det
 import listcompateEquipment from '@/views/mobile-admin/admin-middle/compateequipment/listcompateEquipment'
 import listimgscroll from '@/views/mobile-admin/admin-middle/autoscroll/listimgscroll'
 import addimgscroll from '@/views/mobile-admin/admin-middle/autoscroll/addimgscroll'
-import listcompatecom from '@/views/mobile-admin/admin-middle/compatecomment/listcompatecom'
-import detailcomments from '@/views/mobile-admin/admin-middle/compatecomment/detailcomments'
 // 赛后
 import afterindex from '@/views/mobile-admin/admin-after/afterindex'
 import listbackmsg from '@/views/mobile-admin/admin-after/feedbackmsg/listbackmsg'
@@ -371,22 +369,6 @@ export default new Router({
             label: "轮播图列表"
           },
           component: listimgscroll
-        },
-        {
-          path: '/admin/listcompatecom',
-          name: 'listcompatecom',
-          meta: {
-            label: "赛事列表"
-          },
-          component: listcompatecom
-        },
-        {
-          path: '/admin/detailcomments',
-          name: 'detailcomments',
-          meta: {
-            label: "评论列表"
-          },
-          component: detailcomments
         },
         {
           path: '/admin/afterindex',

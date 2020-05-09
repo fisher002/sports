@@ -19,7 +19,7 @@
       <div v-if="scrolls">
         <van-swipe class="my-swipe" :autoplay="5000" indicator-color="white">
           <van-swipe-item v-for="item in scrolls" :key="item.id">
-            <img style="width:100%" height="160" :src="returnImg(item.url)"/>
+            <img style="width:100%" height="150" :src="returnImg(item.url)"/>
           </van-swipe-item>
         </van-swipe>
       </div>
@@ -87,12 +87,12 @@ export default {
   },
   created() {
     this.checkLogin();
+    this.getScrollPageList();
   },
   methods: {
     /**获取轮播图数据 */
-    getScrollPageList(id) {
-      let params = {schoolId: id}
-      api.getScrollPageList(params, 1).then(
+    getScrollPageList() {
+      api.getScrollPageList({}, 1).then(
         res => {
           if (res.data.code == 10000) {
             this.scrolls = res.data.data.list;
@@ -137,7 +137,6 @@ export default {
         // 获取对应比赛项目
         this.params.schoolId = sessionStorage.getItem("schoolId");
         this.getSchoolCompatePageList();
-        this.getScrollPageList(this.params.schoolId);
       } else {
         this.schoolData = [
           {
@@ -146,7 +145,6 @@ export default {
           }
         ];
         this.getSchoolCompatePageList();
-        this.getScrollPageList();
       }
     },
     /**获取比赛项目信息 */
@@ -210,7 +208,6 @@ export default {
     onRefresh() {
       this.pageNum = 1;
       this.getSchoolCompatePageList();
-      this.getScrollPageList();
     },
     /**toDeatil */
     toDeatil(id) {
@@ -288,7 +285,6 @@ export default {
       width: 100%;
       height: 20px;
       line-height: 18px !important;
-      padding-bottom: 10px;
     }
   }
 }

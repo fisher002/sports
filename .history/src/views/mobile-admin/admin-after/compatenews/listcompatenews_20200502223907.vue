@@ -193,6 +193,7 @@ export default {
       width: 100%;
       height: 20px;
       line-height: 18px !important;
+      padding-bottom: 10px;
     }
   }
 }

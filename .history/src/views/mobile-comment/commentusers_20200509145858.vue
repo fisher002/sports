@@ -13,7 +13,7 @@
               <span>{{formatDate(item.createDate)}}</span>
               <span
                 class="font-blue"
-                v-show="checkMine(item.userId)"
+                v-show="checkMine(item.userInfo)"
                 @click="delComment(item.id)"
               >删除</span>
             </div>
@@ -119,9 +119,9 @@ export default {
       );
     },
     /**检查是否为我的评论 */
-    checkMine(id) {
+    checkMine(info) {
       let userId = sessionStorage.getItem("userId");
-      if (userId === `${id}`) {
+      if (userId === `${info.id}`) {
         return true;
       }
       return false;

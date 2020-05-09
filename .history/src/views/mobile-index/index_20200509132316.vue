@@ -87,12 +87,12 @@ export default {
   },
   created() {
     this.checkLogin();
+    this.getScrollPageList();
   },
   methods: {
     /**获取轮播图数据 */
-    getScrollPageList(id) {
-      let params = {schoolId: id}
-      api.getScrollPageList(params, 1).then(
+    getScrollPageList() {
+      api.getScrollPageList({}, 1).then(
         res => {
           if (res.data.code == 10000) {
             this.scrolls = res.data.data.list;
@@ -137,7 +137,6 @@ export default {
         // 获取对应比赛项目
         this.params.schoolId = sessionStorage.getItem("schoolId");
         this.getSchoolCompatePageList();
-        this.getScrollPageList(this.params.schoolId);
       } else {
         this.schoolData = [
           {
@@ -146,7 +145,6 @@ export default {
           }
         ];
         this.getSchoolCompatePageList();
-        this.getScrollPageList();
       }
     },
     /**获取比赛项目信息 */
@@ -288,7 +286,6 @@ export default {
       width: 100%;
       height: 20px;
       line-height: 18px !important;
-      padding-bottom: 10px;
     }
   }
 }

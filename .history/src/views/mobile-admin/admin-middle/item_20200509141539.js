@@ -30,7 +30,7 @@ export default [
         id: "5"
     },
     {
-        path: "/admin/listcompatecom",
+        path: "/admin/listcompatecomment",
         label: "评论管理",
         icon: "comment-o",
         id: "6"
